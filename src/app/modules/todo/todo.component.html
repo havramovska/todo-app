@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="todo-list-form">
+    <mat-form-field>
+      <mat-label>Todo List Item</mat-label>
+      <input matInput
+             placeholder="E.g. Send Email"
+             [formControl]="newTodo">
+    </mat-form-field>
+    <button mat-raised-button
+            color="primary"
+            [disabled]="newTodo.invalid"
+            (click)="addNewTodo()">Add Todo</button>
+  </div>
+
+  <mat-tab-group>
+    <mat-tab label="All">
+      <div class="todo-item"
+           *ngFor="let todo of allTodos$ | async">
+        <app-todo-item [todo]="todo"></app-todo-item>
+      </div>
+      <p class="todo-item no-todos"
+         *ngIf="!(allTodos$ | async)?.length">No todos</p>
+    </mat-tab>
+    <mat-tab label="In Progress"
+             [disabled]="!(allTodos$ | async)?.length">
+      <div class="todo-item"
+           *ngFor="let todo of allTodos$ | async">
+        <ng-container *ngIf="todo.status === 'IN_PROGRESS'">
+          <app-todo-item [todo]="todo"></app-todo-item>
+        </ng-container>
+        <p class="todo-item no-todos"
+           *ngIf="!hasInProgressTodos(allTodos$ | async)">No todos in progress</p>
+      </div>
+    </mat-tab>
+    <mat-tab label="Completed"
+             [disabled]="!(allTodos$ | async)?.length">
+      <div class="todo-item"
+           *ngFor="let todo of allTodos$ | async">
+        <ng-container *ngIf="todo.status === 'COMPLETE'">
+          <app-todo-item [todo]="todo"></app-todo-item>
+        </ng-container>
+        <p class="todo-item no-todos"
+           *ngIf="!hasCompleteTodos(allTodos$ | async)">No completed todos</p>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

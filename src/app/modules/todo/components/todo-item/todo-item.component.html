@@ -1,0 +1,26 @@
+<div class="todo-item">
+  <mat-form-field [disabled]="todo.status === 'COMPLETE'">
+    <input matInput
+           [formControl]="nameControl"
+           (keyup.enter)="changeTodoName(todo)"
+           (blur)="changeTodoName(todo)"
+           class="{{todo.status.toLowerCase()}}">
+  </mat-form-field>
+
+  <div class="todo-actions">
+    <button mat-mini-fab
+            color="primary"
+            aria-label="Complete"
+            [disabled]="todo.status === 'COMPLETE'"
+            (click)="changeTodoStatus(todo)">
+      <mat-icon>done</mat-icon>
+    </button>
+
+    <button mat-mini-fab
+            color="warn"
+            aria-label="Delete"
+            (click)="removeTodo(todo.id)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
